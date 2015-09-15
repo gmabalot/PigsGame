@@ -16,22 +16,28 @@ class GameFunc{
 	public:
 		void startMessage();
 		void beginGame();
-		int getPlayerChoice(Player p);
-		bool setName(string name, Player p);
+		int getPlayerChoice();
+		bool setName(string name);
 		bool resetScore();
 		bool changeDifficulty(int i);
-		int rollDie(Die d, Player p);
+		int rollDie();
 		int getNumPlayers();
 	private:
 		int m_holdPoints = 0;
-		int m_numPlayers = 0;
-		int m_numCompPlayers = 0;
-		vector<int> m_passNums = {1};
+		int m_numPlayers = 1;
+		int m_numCompPlayers = 1;
+		vector<int> m_passNums = {1}; //incase mroe pass numbers than 1
 		vector<Player> m_pVec;
-		int m_curPlayerNum;
+		int m_curPlayerIndex;
 		int m_endScore = 100;
 		int m_maxDifficultyLevels = 4;
-		int m_
+		int m_numSides = 6;
+		Dice d;
+
+		//Could be implemented into a vector for multiple user names.
+		string m_playerName; 
+
+		void additionalOptions();
 		void updateHoldScore(Player p);
 		bool changeTurn();
 		bool checkWinner(Player p);
