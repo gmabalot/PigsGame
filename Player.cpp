@@ -1,8 +1,8 @@
 #include "Player.h"
 
-Player::Player(std::string name, int starting_score){
+Player::Player(std::string name){
 	this->name = name;
-	score = starting_score;
+	score = 0;
 }
 
 Player::~Player(){
