@@ -1,6 +1,6 @@
 #include "Dice.h"
 #include "Player.h"
-#include "GameFunc.h"
+#include "gameFunc.h"
 #include <iostream>
 
 using namespace std;

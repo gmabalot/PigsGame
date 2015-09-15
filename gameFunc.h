@@ -6,8 +6,8 @@
 #ifndef GAME_FUNCTIONS
 #define GAME_FUNCTIONS
 
-#include "player.h"
-#include "die.h"
+#include "Player.h"
+#include "Dice.h"
 
 using std::string;
 using std::vector;
