@@ -8,7 +8,7 @@ class Player{
 	std::string name;
 
 	public:
-		Player(std::string name, int starting_score);
+		Player(std::string name);
 		~Player();
 		// Getters
 		std::string getName() {return name;}
