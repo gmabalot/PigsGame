@@ -16,6 +16,10 @@
 using std::string;
 using std::vector;
 
+/**
+* startMessage - this function displays the game title and has the player
+* set their name and game attributes
+*/
 void GameFunc::startMessage(){
 	string gameName[8] = {" _____ _            _____                     ",
  	"|  __ (_)          / ____|                     ",
@@ -51,6 +55,9 @@ void GameFunc::startMessage(){
 
 }
 
+/**
+* This function is called when the player would like additional options
+*/
 void GameFunc::additionalOptions(){
 	"Please enter the number of players: ";
 	int temp;
@@ -71,6 +78,9 @@ void GameFunc::additionalOptions(){
 	//function to handle this.
 }
 
+/**
+* beginGame - this function begins the game
+*/
 void GameFunc::beginGame(){
 	//Select random player to start.
 	srand(time(NULL)); //Initialize random seed.
@@ -90,11 +100,19 @@ void GameFunc::beginGame(){
 	gameEnd();
 }
 
+
+/*
+* gameEnd - this function ends the game
+*/
 void GameFunc::gameEnd(){
 	cout << "\nGame Over.\n";
 	//Ask to play again, if yes, resetScores(), ask for additionalOptions()
 }
 
+/**
+* rollDie - This function calls the die roll function of the die and handles the output.
+* @return - bool - Whether or not the die roll was in m_passNums[]
+*/
 bool GameFunc::rollDie(){
 	int roll = d.getRoll();
 	//Check if the roll is a passable num
@@ -109,10 +127,19 @@ bool GameFunc::rollDie(){
 	return true;
 }
 
+/**
+* getNumPlayers - this function returns the number of players
+* @return - int - the number of players
+*/
 int GameFunc::getNumPlayers(){
 	return m_numPlayers;
 }
 
+/**
+* getPlayerChoice - this function allows the player to continue rolling
+* or to hold at their current roll
+* @return - bool - 
+*/
 bool GameFunc::getPlayerChoice(){
 	cout << "Roll or Hold (r/h): \n";
 	string input;
@@ -123,11 +150,17 @@ bool GameFunc::getPlayerChoice(){
 
 }
 
+/**
+* resetScore - this function resets the score if the player wishes to continue playing
+*/
 bool GameFunc::resetScore(){
 	for(i=0; i<m_numPlayers;i++);
 		m_pVec[score = 0;
 }
 
+/**
+*	changeDifficulty - Called from within the additionalOptions() function, changes AI difficulty level
+*/
 void GameFunc::changeDifficulty(int i){
 	for(int i=0;i<m_numPlayers;i++)
 		if(m_pVec[i].type == 1)
@@ -135,11 +168,17 @@ void GameFunc::changeDifficulty(int i){
 	}
 }
 
+/**
+*	updateHoldScore - adds m_holdPoints to the current player's score
+*/ 
 void GameFunc::updateHoldScore(){
 	m_pVec[m_curPlayerIndex].score += m_holdPoints;
 	m_holdPoints = 0;
 }
 
+/**
+*	changeTurn - changes the player turn to the next player in m_pVec
+*/
 void GameFunc::changeTurn(){
 	if(m_curPlayerIndex == (m_pVec.size()-1))
 		m_curPlayerIndex = 0;
@@ -147,19 +186,32 @@ void GameFunc::changeTurn(){
 		m_curPlayerIndex++;
 }
 
+/**
+*	checkWinner - checks if the current player has scored > m_endScore
+*/
 bool GameFunc::checkWinner(){
 	if (m_pVec[m_curPlayerIndex].getPoints >= m_endScore)
 		gameEnd();
 }
 
+/**
+*	addNumToPassNums - called from additionalOptions function to add numbers to pass
+*/
 void GameFunc::addNumToPassNums(){
 	//add nums to pass to m_passNums
 }
 
+/**
+*	setEndScore - changes the m_endScore of the game
+*/
 void GameFunc::setEndScore(int i){
 	m_endScore = i;
 }
 
+/**
+*	addPlayer - adds a player to m_pVec
+	@param - string - playerName - the name of the player to be added
+*/
 void GameFunc::addPlayer(string playerName){
 	Player p = new Player(playerName);
 	m_pVec.push(p);
