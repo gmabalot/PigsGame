@@ -16,10 +16,6 @@
 using std::string;
 using std::vector;
 
-/*
- * startMessage - this function displays the game title and has the player
- * set their name and game attributes
-*/
 void GameFunc::startMessage(){
 	string gameName[8] = {" _____ _            _____                     ",
  	"|  __ (_)          / ____|                     ",
@@ -35,6 +31,27 @@ void GameFunc::startMessage(){
 		cout << gameName[i] << endl;
 
 	cout << "\n\nWelcome to PigsGame!\n"+
+	cout << "What is your name?\n"
+	string s;
+	addPlayer(s);
+
+	//Not enough time to fully implement
+	cout << "\nWould you like to change additional options?\n y / n \n"
+	cin >> s;
+	if(s=='y' || s=='Y')
+		additionalOptions();
+
+	if(m_numCompPlayers > 0){
+		cout << "\nWhat difficulty would you like the computer set to (Range: 0 - " + m_maxDifficultyLevels + "): ";
+		int temp;
+		cin >> temp;
+		changeDifficulty(temp);
+
+	}
+
+}
+
+void GameFunc::additionalOptions(){
 	"Please enter the number of players: ";
 	int temp;
 	cin >> temp;
@@ -42,171 +59,108 @@ void GameFunc::startMessage(){
 	cout << "\nPlease enter the number of computer players: ";
 	cin >> temp;
 	m_numCompPlayers = temp;
-	cout << "\nWould you like to change additional options?\n y / n \n"
+	//Requires separate function to reassign d
+	cout << "\nPlease enter the number of sides you want the die to have: "
+	cin >> temp;
+	m_numSides = temp;
+	cout << "\nPlease specify the amount you would like the game to end at: "
+	cin >> temp;
+	m_endScore = temp;
+	cout << "\nPlease enter any numbers you would like to pass on separated by commas: "
 	string s;
-	cin >> s;
-	if(s=='y' || s=='Y')
-		additionalOptions();
+	//function to handle this.
 }
 
-/*
- * beginGame - this function begins the game
- */
 void GameFunc::beginGame(){
 	//Select random player to start.
-
-	m_pVec.push()
 	srand(time(NULL)); //Initialize random seed.
 	int firstPlayer = rand() * m_pVec.size();
+	m_curPlayerIndex = firstPlayer;
 
+	//Main loop
+	while(!checkWinner()) //While score < m_endScore;
+		if(getPlayerChoice()){ // Roll or hold
+			if(!rollDie())	// If !(num in m_passNums), add roll to m_holdPoints
+				changeTurn();
+		}
+		else{
+			updateHoldScore(); // Add points to 
+			changeTurn();
+		}
+	gameEnd();
 }
 
-
-/*
- * gameEnd - this function ends the game
- */
 void GameFunc::gameEnd(){
+	cout << "\nGame Over.\n";
+	//Ask to play again, if yes, resetScores(), ask for additionalOptions()
 }
 
+bool GameFunc::rollDie(){
+	int roll = d.getRoll();
+	//Check if the roll is a passable num
+	int passNumsSize = m_passNums.size();
+	for(int i=0;i<passNumsSize;i++)
+		if(roll == m_passNums[i]){
+			m_holdPoints = 0;
+			return false;
+		}
+	//Otherwise update holdscore
+	m_holdPoints += roll;
+	return true;
+}
 
-/*
- * getNumPlayers - this function returns the number of players
- * @return - int - the number of players
- */
 int GameFunc::getNumPlayers(){
 	return m_numPlayers;
 }
 
+bool GameFunc::getPlayerChoice(){
+	cout << "Roll or Hold (r/h): \n";
+	string input;
+	cin >> input;
+	if(input == r)
+		return true;
+	return false;
 
-/*
- * getPlayerChoice - this function allows the player to continue rolling
- * or to hold at their current roll
- * @param - Player p - the player making the choice
- * @return - bool - 
- */
-bool GameFunc::getPlayerChoice(Player p){
-	int i = p.getChoice(); //return 0 or 1 for hold/roll
-	if(i == 1)
-		rollDie(d, p); //Need to create a dice object here
-	else{
-		updateScore(p);
-		changeTurn(vector<Player>* p);//change
-	}
 }
 
-
-/*
- * setName - this function sets the players name
- * @return - bool -
- */
-bool GameFunc::setName(string name, Player p){
-	//Call player.setName and handle errors
-	p.setName(name);
-}
-
-/*
- * resetScore - this function resets the score
- * @return - bool -
- */
 bool GameFunc::resetScore(){
-	for(Player curPlayer : pVec)
-		curPlayer.score = 0;
+	for(i=0; i<m_numPlayers;i++);
+		m_pVec[score = 0;
 }
 
-/*
- * changeDiffiiculty - this function changes the AI difficulty
- * @param - int i - integer to describe difficulty level
- * @return - bool -
- */
-bool GameFunc::changeDifficulty(int i){
-	//Potentially move this const;
-	for( Player curPlayer : pVec)
-		if(curPlayer.difficulty >=0 && i>0 && i<m_maxDifficultyLevels) //-1 indicates human player
-			curPlayer.difficulty = i;
+void GameFunc::changeDifficulty(int i){
+	for(int i=0;i<m_numPlayers;i++)
+		if(m_pVec[i].type == 1)
+		//Change difficulty of all computer players
 	}
 }
 
-/*
- * rollDie - this function rolls the dice for the player
- * @param - Die - the die that is being rolled
- * @return - int
- */
-int GameFunc::rollDie(Die d){
-	int dieNum = d.roll;
-	for(int i : m_passNums)
-		if(i == dieNum)
-			holdPoints = 0; //reset temp pts if 
-	}
-	if(holdPoints==0)
-		if(!changeTurn)
-			//console.log("Error changing turn.");
-
-/*
- * updateHoldScore - this function updates the score being held and
- * checks to see if the plaer has won
- * @param - Player - the current player whose score is being updated 
- */
-void GameFunc::updateHoldScore(Player p){
-	p.score += holdPoints;
-	holdPoints = 0;
-	checkWinner(p);
+void GameFunc::updateHoldScore(){
+	m_pVec[m_curPlayerIndex].score += m_holdPoints;
+	m_holdPoints = 0;
 }
 
-/*
- *
- *
- *
- *
- */
-bool GameFunc::changeTurn(){
-	
+void GameFunc::changeTurn(){
+	if(m_curPlayerIndex == (m_pVec.size()-1))
+		m_curPlayerIndex = 0;
+	else
+		m_curPlayerIndex++;
 }
 
-/*
- * checkWinner - checks if score is high enough to win
- *
- */
 bool GameFunc::checkWinner(){
-	if (p.getPoints >= m_endScore)
+	if (m_pVec[m_curPlayerIndex].getPoints >= m_endScore)
 		gameEnd();
 }
 
-/*
- *
- *
- *
- */
-void GameFunc::addNumToPassNums(vector<int> nums){
-	for(int i : nums)
-		m_passNums.push(i);
+void GameFunc::addNumToPassNums(){
+	//add nums to pass to m_passNums
 }
 
-/*
- * setEndScore - sets the toatal amount of points needed to win
- * @param - int - the goal/winning number to use
- */
 void GameFunc::setEndScore(int i){
 	m_endScore = i;
 }
 
-/*
- * addPlayer - adds an individual player to the game
- * @param - string - the name of the player
- * @param - int - if the player is human or AI
- */
-void GameFunc::addPlayer(string playerName, int playerType){
-	if(playerType == 0)
-		Player p = new Player(player);
-	else
-
-
-}
-
-
-
-/*
- * addPlayers - adds players to the game
- */
-void GameFunc::addPlayers(){
-
+void GameFunc::addPlayer(string playerName){
+	Player p = new Player(playerName);
+	m_pVec.push(p);
 }

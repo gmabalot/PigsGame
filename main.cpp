@@ -8,11 +8,10 @@ using namespace std;
 
 int main()
 {
-	cout << "Welcome to PigsGame" << endl;
 
-
-
-
+	gameFunc gf = new GameFunc();
+	gf.startMessage();
+	gf.beginGame();
 
 	return 0;
 };
